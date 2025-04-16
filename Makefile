@@ -1,7 +1,10 @@
-start-dev:
+dev:
+	air
+
+start:
 	go run cmd/api/main.go
 
-start-test:
+test:
 	cp .env internal/service && go test ./internal/service && rm internal/service/.env
 
 swag-generate:
