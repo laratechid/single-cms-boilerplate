@@ -3,6 +3,7 @@ package handler
 import (
 	"strconv"
 	"super-cms/helper"
+	"super-cms/internal/dto"
 	"super-cms/internal/service"
 
 	"github.com/gin-gonic/gin"
@@ -21,10 +22,14 @@ func NewArticleRoute(db *gorm.DB) ArticleHandler {
 	return controller
 }
 
-func (h ArticleHandler) GetOne(c *gin.Context) {
+//	@Tags		Article
+//	@Summary	Get Article Details
+//	@Param		id	path		int	true	"Article ID"
+//	@Success	200	{object}	helper.Response{data=dto.ArticleDetailResponse}
+//	@Router		/articles/{id} [get]
+func (h ArticleHandler) GetByID(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		helper.LogErr(err)
 		helper.ResErr(c, 400, err.Error())
 		return
 	}
@@ -34,4 +39,95 @@ func (h ArticleHandler) GetOne(c *gin.Context) {
 		return
 	}
 	helper.ResSuccess(c, data)
+}
+
+//	@Tags		Article
+//	@Summary	Get All Article
+//	@Param		request	query		dto.PaginationRequestDto	true	"Query Params"
+//	@Success	200		{object}	helper.ResponsePaginate{data=[]dto.ArticleDetailResponse}
+//	@Router		/articles [get]
+func (h ArticleHandler) GetAll(c *gin.Context) {
+	var payload dto.PaginationRequestDto
+	if err := c.Bind(&payload); err != nil {
+		helper.ResErr(c, 400, err.Error())
+		return
+	}
+	if err := helper.ValidateRequest(payload); err != nil {
+		helper.ResErr(c, 400, err.Error())
+		return
+	}
+	data, err := h.articleSvc.GetAll(payload)
+	if err != nil {
+		helper.ResErr(c, 400, err.Error())
+		return
+	}
+	helper.ResPaginate(c, data.Data, data.Limit, data.TotalEntry)
+}
+
+//	@Tags		Article
+//	@Summary	Create Article
+//	@Param		request	body		dto.ArticleCreateRequestDto	true	"Article payload"
+//	@Success	200		{object}	helper.Response{data=string}
+//	@Router		/articles [post]
+func (h ArticleHandler) Create(c *gin.Context) {
+	var payload dto.ArticleCreateRequestDto
+	if err := c.Bind(&payload); err != nil {
+		helper.ResErr(c, 400, err.Error())
+		return
+	}
+	if err := helper.ValidateRequest(payload); err != nil {
+		helper.ResErr(c, 400, err.Error())
+		return
+	}
+	if err := h.articleSvc.Create(payload); err != nil {
+		helper.ResErr(c, 400, err.Error())
+		return
+	}
+	helper.ResSuccess(c, "ok")
+}
+
+//	@Tags		Article
+//	@Summary	Update Article
+//	@Param		id		path		int							true	"Article ID"
+//	@Param		request	body		dto.ArticleUpdateRequestDto	true	"Article payload"
+//	@Success	200		{object}	helper.Response{data=string}
+//	@Router		/articles/{id} [patch]
+func (h ArticleHandler) Update(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		helper.ResErr(c, 400, err.Error())
+		return
+	}
+	var payload dto.ArticleUpdateRequestDto
+	if err := c.Bind(&payload); err != nil {
+		helper.ResErr(c, 400, err.Error())
+		return
+	}
+	if err := helper.ValidateRequest(payload); err != nil {
+		helper.ResErr(c, 400, err.Error())
+		return
+	}
+	if err := h.articleSvc.Update(int64(id), payload); err != nil {
+		helper.ResErr(c, 400, err.Error())
+		return
+	}
+	helper.ResSuccess(c, "ok")
+}
+
+//	@Tags		Article
+//	@Summary	Delete Article
+//	@Param		id	path		int	true	"Article ID"
+//	@Success	200	{object}	helper.Response{data=string}
+//	@Router		/articles/{id} [delete]
+func (h ArticleHandler) Delete(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		helper.ResErr(c, 400, err.Error())
+		return
+	}
+	if err := h.articleSvc.Delete(int64(id)); err != nil {
+		helper.ResErr(c, 400, err.Error())
+		return
+	}
+	helper.ResSuccess(c, "ok")
 }

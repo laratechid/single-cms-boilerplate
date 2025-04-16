@@ -7,10 +7,17 @@ import (
 )
 
 type Response struct {
-	Status  int    `json:"status"`
-	Message string `json:"message"`
-	Data    any    `json:"data,omitempty"`
-	Error   any    `json:"error,omitempty"`
+	Status  int    `json:"status" example:"200"`
+	Message string `json:"message" example:"ok"`
+	Data    any    `json:"data"`
+}
+
+type ResponsePaginate struct {
+	Status     int    `json:"status" example:"200"`
+	Message    string `json:"message" example:"ok"`
+	Data       any    `json:"data"`
+	Limit      int    `json:"limit"`
+	TotalEntry int    `json:"total_entry"`
 }
 
 func ResOk(c *gin.Context, status int, data any) {
@@ -18,6 +25,16 @@ func ResOk(c *gin.Context, status int, data any) {
 		Status:  status,
 		Message: "ok",
 		Data:    data,
+	})
+}
+
+func ResPaginate(c *gin.Context, data any, limit int, total int) {
+	c.AbortWithStatusJSON(http.StatusOK, ResponsePaginate{
+		Status:     http.StatusOK,
+		Message:    "ok",
+		Data:       data,
+		Limit:      limit,
+		TotalEntry: total,
 	})
 }
 

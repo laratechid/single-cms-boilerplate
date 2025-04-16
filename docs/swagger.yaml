@@ -1,0 +1,182 @@
+definitions:
+  dto.ArticleCreateRequestDto:
+    properties:
+      body:
+        minLength: 5
+        type: string
+      title:
+        minLength: 5
+        type: string
+    required:
+    - body
+    - title
+    type: object
+  dto.ArticleDetailResponse:
+    properties:
+      body:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: integer
+      title:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  dto.ArticleUpdateRequestDto:
+    properties:
+      body:
+        minLength: 5
+        type: string
+      title:
+        minLength: 5
+        type: string
+    required:
+    - body
+    - title
+    type: object
+  helper.Response:
+    properties:
+      data: {}
+      message:
+        example: ok
+        type: string
+      status:
+        example: 200
+        type: integer
+    type: object
+  helper.ResponsePaginate:
+    properties:
+      data: {}
+      limit:
+        type: integer
+      message:
+        example: ok
+        type: string
+      status:
+        example: 200
+        type: integer
+      total_entry:
+        type: integer
+    type: object
+info:
+  contact: {}
+  title: SuperCMS documentation API
+  version: "2.0"
+paths:
+  /articles:
+    get:
+      parameters:
+      - example: 10
+        in: query
+        name: limit
+        type: integer
+      - example: 1
+        in: query
+        name: page
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/helper.ResponsePaginate'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/dto.ArticleDetailResponse'
+                  type: array
+              type: object
+      summary: Get All Article
+      tags:
+      - Article
+    post:
+      parameters:
+      - description: Article payload
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.ArticleCreateRequestDto'
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/helper.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: Create Article
+      tags:
+      - Article
+  /articles/{id}:
+    delete:
+      parameters:
+      - description: Article ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/helper.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: Delete Article
+      tags:
+      - Article
+    get:
+      parameters:
+      - description: Article ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/helper.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.ArticleDetailResponse'
+              type: object
+      summary: Get Article Details
+      tags:
+      - Article
+    patch:
+      parameters:
+      - description: Article ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Article payload
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.ArticleUpdateRequestDto'
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/helper.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: Update Article
+      tags:
+      - Article
+swagger: "2.0"

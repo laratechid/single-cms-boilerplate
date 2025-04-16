@@ -8,8 +8,12 @@ import (
 )
 
 func SetupRoute(db *gorm.DB, gin *gin.Engine) {
-	articleRouter := gin.Group("/articles")
 	articleRoute := handler.NewArticleRoute(db)
 
-	articleRouter.GET("/:id", articleRoute.GetOne)
+	articleRouter := gin.Group("/articles")
+	articleRouter.GET("/:id", articleRoute.GetByID)
+	articleRouter.GET("", articleRoute.GetAll)
+	articleRouter.POST("", articleRoute.Create)
+	articleRouter.PATCH("/:id", articleRoute.Update)
+	articleRouter.DELETE("/:id", articleRoute.Delete)
 }
