@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"super-cms/config"
 	"super-cms/docs"
@@ -12,8 +13,11 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
-//	@title		SuperCMS documentation API
-//	@version	2.0
+// @title						SuperCMS documentation API
+// @version					    3.0
+// @securityDefinitions.apikey	BearerAuth
+// @in							header
+// @name						Authorization
 func main() {
 	r := gin.Default()
 	docs.SwaggerInfo.BasePath = "/"
@@ -25,5 +29,5 @@ func main() {
 		panic("migrate error")
 	}
 	route.SetupRoute(gorm, r)
-	r.Run()
+	r.Run(fmt.Sprintf(":%s", "8000"))
 }

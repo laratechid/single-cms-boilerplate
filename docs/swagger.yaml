@@ -36,6 +36,30 @@ definitions:
     - body
     - title
     type: object
+  dto.AuthRequestDto:
+    properties:
+      password:
+        minLength: 5
+        type: string
+      username:
+        minLength: 1
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  dto.PaginationResponseDtoExample:
+    properties:
+      limit:
+        example: 10
+        type: integer
+      list:
+        items: {}
+        type: array
+      total_entry:
+        example: 100
+        type: integer
+    type: object
   helper.Response:
     properties:
       data: {}
@@ -46,24 +70,10 @@ definitions:
         example: 200
         type: integer
     type: object
-  helper.ResponsePaginate:
-    properties:
-      data: {}
-      limit:
-        type: integer
-      message:
-        example: ok
-        type: string
-      status:
-        example: 200
-        type: integer
-      total_entry:
-        type: integer
-    type: object
 info:
   contact: {}
   title: SuperCMS documentation API
-  version: "2.0"
+  version: "3.0"
 paths:
   /articles:
     get:
@@ -81,13 +91,13 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/helper.ResponsePaginate'
+            - $ref: '#/definitions/helper.Response'
             - properties:
                 data:
-                  items:
-                    $ref: '#/definitions/dto.ArticleDetailResponse'
-                  type: array
+                  $ref: '#/definitions/dto.PaginationResponseDtoExample'
               type: object
+      security:
+      - BearerAuth: []
       summary: Get All Article
       tags:
       - Article
@@ -109,6 +119,8 @@ paths:
                 data:
                   type: string
               type: object
+      security:
+      - BearerAuth: []
       summary: Create Article
       tags:
       - Article
@@ -130,6 +142,8 @@ paths:
                 data:
                   type: string
               type: object
+      security:
+      - BearerAuth: []
       summary: Delete Article
       tags:
       - Article
@@ -150,6 +164,8 @@ paths:
                 data:
                   $ref: '#/definitions/dto.ArticleDetailResponse'
               type: object
+      security:
+      - BearerAuth: []
       summary: Get Article Details
       tags:
       - Article
@@ -176,7 +192,36 @@ paths:
                 data:
                   type: string
               type: object
+      security:
+      - BearerAuth: []
       summary: Update Article
       tags:
       - Article
+  /auth/login:
+    post:
+      parameters:
+      - description: Auth payload
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.AuthRequestDto'
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/helper.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: Auth Login
+      tags:
+      - Auth
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

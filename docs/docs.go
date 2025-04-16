@@ -17,6 +17,11 @@ const docTemplate = `{
     "paths": {
         "/articles": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "tags": [
                     "Article"
                 ],
@@ -41,16 +46,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/helper.ResponsePaginate"
+                                    "$ref": "#/definitions/helper.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/dto.ArticleDetailResponse"
-                                            }
+                                            "$ref": "#/definitions/dto.PaginationResponseDtoExample"
                                         }
                                     }
                                 }
@@ -60,6 +62,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "tags": [
                     "Article"
                 ],
@@ -99,6 +106,11 @@ const docTemplate = `{
         },
         "/articles/{id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "tags": [
                     "Article"
                 ],
@@ -134,6 +146,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "tags": [
                     "Article"
                 ],
@@ -169,6 +186,11 @@ const docTemplate = `{
                 }
             },
             "patch": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "tags": [
                     "Article"
                 ],
@@ -188,6 +210,45 @@ const docTemplate = `{
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/dto.ArticleUpdateRequestDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/helper.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Auth Login",
+                "parameters": [
+                    {
+                        "description": "Auth payload",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.AuthRequestDto"
                         }
                     }
                 ],
@@ -269,6 +330,40 @@ const docTemplate = `{
                 }
             }
         },
+        "dto.AuthRequestDto": {
+            "type": "object",
+            "required": [
+                "password",
+                "username"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string",
+                    "minLength": 5
+                },
+                "username": {
+                    "type": "string",
+                    "minLength": 1
+                }
+            }
+        },
+        "dto.PaginationResponseDtoExample": {
+            "type": "object",
+            "properties": {
+                "limit": {
+                    "type": "integer",
+                    "example": 10
+                },
+                "list": {
+                    "type": "array",
+                    "items": {}
+                },
+                "total_entry": {
+                    "type": "integer",
+                    "example": 100
+                }
+            }
+        },
         "helper.Response": {
             "type": "object",
             "properties": {
@@ -282,33 +377,20 @@ const docTemplate = `{
                     "example": 200
                 }
             }
-        },
-        "helper.ResponsePaginate": {
-            "type": "object",
-            "properties": {
-                "data": {},
-                "limit": {
-                    "type": "integer"
-                },
-                "message": {
-                    "type": "string",
-                    "example": "ok"
-                },
-                "status": {
-                    "type": "integer",
-                    "example": 200
-                },
-                "total_entry": {
-                    "type": "integer"
-                }
-            }
+        }
+    },
+    "securityDefinitions": {
+        "BearerAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }`
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "2.0",
+	Version:          "3.0",
 	Host:             "",
 	BasePath:         "",
 	Schemes:          []string{},

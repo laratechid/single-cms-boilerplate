@@ -3,11 +3,16 @@
     "info": {
         "title": "SuperCMS documentation API",
         "contact": {},
-        "version": "2.0"
+        "version": "3.0"
     },
     "paths": {
         "/articles": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "tags": [
                     "Article"
                 ],
@@ -32,16 +37,13 @@
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/helper.ResponsePaginate"
+                                    "$ref": "#/definitions/helper.Response"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/dto.ArticleDetailResponse"
-                                            }
+                                            "$ref": "#/definitions/dto.PaginationResponseDtoExample"
                                         }
                                     }
                                 }
@@ -51,6 +53,11 @@
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "tags": [
                     "Article"
                 ],
@@ -90,6 +97,11 @@
         },
         "/articles/{id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "tags": [
                     "Article"
                 ],
@@ -125,6 +137,11 @@
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "tags": [
                     "Article"
                 ],
@@ -160,6 +177,11 @@
                 }
             },
             "patch": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "tags": [
                     "Article"
                 ],
@@ -179,6 +201,45 @@
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/dto.ArticleUpdateRequestDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/helper.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Auth Login",
+                "parameters": [
+                    {
+                        "description": "Auth payload",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.AuthRequestDto"
                         }
                     }
                 ],
@@ -260,6 +321,40 @@
                 }
             }
         },
+        "dto.AuthRequestDto": {
+            "type": "object",
+            "required": [
+                "password",
+                "username"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string",
+                    "minLength": 5
+                },
+                "username": {
+                    "type": "string",
+                    "minLength": 1
+                }
+            }
+        },
+        "dto.PaginationResponseDtoExample": {
+            "type": "object",
+            "properties": {
+                "limit": {
+                    "type": "integer",
+                    "example": 10
+                },
+                "list": {
+                    "type": "array",
+                    "items": {}
+                },
+                "total_entry": {
+                    "type": "integer",
+                    "example": 100
+                }
+            }
+        },
         "helper.Response": {
             "type": "object",
             "properties": {
@@ -273,26 +368,13 @@
                     "example": 200
                 }
             }
-        },
-        "helper.ResponsePaginate": {
-            "type": "object",
-            "properties": {
-                "data": {},
-                "limit": {
-                    "type": "integer"
-                },
-                "message": {
-                    "type": "string",
-                    "example": "ok"
-                },
-                "status": {
-                    "type": "integer",
-                    "example": 200
-                },
-                "total_entry": {
-                    "type": "integer"
-                }
-            }
+        }
+    },
+    "securityDefinitions": {
+        "BearerAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }

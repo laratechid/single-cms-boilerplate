@@ -37,7 +37,7 @@ func (s *articleService) GetAll(p dto.PaginationRequestDto) (*dto.PaginationResp
 		return nil, err
 	}
 	response := dto.PaginationResponseDto[dto.ArticleDetailResponse]{
-		Data:       articles,
+		List:       articles,
 		Limit:      p.Limit,
 		TotalEntry: int(total),
 	}

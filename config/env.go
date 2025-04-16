@@ -20,9 +20,12 @@ type Config struct {
 		User string
 		Pass string
 	}
+	Jwt struct {
+		Secret string
+	}
 }
 
-func Loadenv() *Config {
+func Env() *Config {
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
@@ -39,6 +42,8 @@ func Loadenv() *Config {
 	cfg.Postgres.DB = os.Getenv("POSTGRES_DB")
 	cfg.Postgres.User = os.Getenv("POSTGRES_USER")
 	cfg.Postgres.Pass = os.Getenv("POSTGRES_PASS")
+
+	cfg.Jwt.Secret = os.Getenv("JWT_SECRET")
 
 	return cfg
 }

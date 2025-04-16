@@ -14,7 +14,7 @@ type ArticleHandler struct {
 	articleSvc service.ArticleService
 }
 
-func NewArticleRoute(db *gorm.DB) ArticleHandler {
+func NewArticleHandler(db *gorm.DB) ArticleHandler {
 	service := service.NewArticleService(db)
 	controller := ArticleHandler{
 		articleSvc: service,
@@ -23,6 +23,7 @@ func NewArticleRoute(db *gorm.DB) ArticleHandler {
 }
 
 //	@Tags		Article
+//	@Security	BearerAuth
 //	@Summary	Get Article Details
 //	@Param		id	path		int	true	"Article ID"
 //	@Success	200	{object}	helper.Response{data=dto.ArticleDetailResponse}
@@ -42,9 +43,10 @@ func (h ArticleHandler) GetByID(c *gin.Context) {
 }
 
 //	@Tags		Article
+//	@Security	BearerAuth
 //	@Summary	Get All Article
 //	@Param		request	query		dto.PaginationRequestDto	true	"Query Params"
-//	@Success	200		{object}	helper.ResponsePaginate{data=[]dto.ArticleDetailResponse}
+//	@Success	200		{object}	helper.Response{data=dto.PaginationResponseDtoExample}
 //	@Router		/articles [get]
 func (h ArticleHandler) GetAll(c *gin.Context) {
 	var payload dto.PaginationRequestDto
@@ -61,10 +63,11 @@ func (h ArticleHandler) GetAll(c *gin.Context) {
 		helper.ResErr(c, 400, err.Error())
 		return
 	}
-	helper.ResPaginate(c, data.Data, data.Limit, data.TotalEntry)
+	helper.ResSuccess(c, data)
 }
 
 //	@Tags		Article
+//	@Security	BearerAuth
 //	@Summary	Create Article
 //	@Param		request	body		dto.ArticleCreateRequestDto	true	"Article payload"
 //	@Success	200		{object}	helper.Response{data=string}
@@ -87,6 +90,7 @@ func (h ArticleHandler) Create(c *gin.Context) {
 }
 
 //	@Tags		Article
+//	@Security	BearerAuth
 //	@Summary	Update Article
 //	@Param		id		path		int							true	"Article ID"
 //	@Param		request	body		dto.ArticleUpdateRequestDto	true	"Article payload"
@@ -115,6 +119,7 @@ func (h ArticleHandler) Update(c *gin.Context) {
 }
 
 //	@Tags		Article
+//	@Security	BearerAuth
 //	@Summary	Delete Article
 //	@Param		id	path		int	true	"Article ID"
 //	@Success	200	{object}	helper.Response{data=string}
