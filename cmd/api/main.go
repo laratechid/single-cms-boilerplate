@@ -29,5 +29,5 @@ func main() {
 		panic("migrate error")
 	}
 	route.SetupRoute(gorm, r)
-	r.Run(fmt.Sprintf(":%s", "8000"))
+	r.Run(fmt.Sprintf(":%s", config.Env().App.Port))
 }
