@@ -8,12 +8,12 @@ import (
 )
 
 type JwtPayload struct {
-	ID       int64    `json:"id"`
-	Name     string   `json:"name"`
-	Username string   `json:"username"`
-	Email    string   `json:"email"`
-	Permit   []string `json:"permit"`
-	jwt.MapClaims
+	ID            int64    `json:"id"`
+	Name          string   `json:"name"`
+	Username      string   `json:"username"`
+	Email         string   `json:"email"`
+	Permits       []string `json:"permits"`
+	jwt.MapClaims `json:"claims"`
 }
 
 var secretKey = []byte(config.Env().Jwt.Secret)

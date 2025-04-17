@@ -1,10 +1,15 @@
 package middleware
 
 import (
+	"errors"
 	"strings"
+	"super-cms/config"
 	"super-cms/helper"
 
 	"github.com/gin-gonic/gin"
+	"github.com/go-stack/stack"
+	"github.com/golang-jwt/jwt/v5"
+	"github.com/samber/lo"
 )
 
 func Authentication() gin.HandlerFunc {
@@ -25,5 +30,22 @@ func Authentication() gin.HandlerFunc {
 			return
 		}
 		c.Next()
+	}
+}
+
+func ValidatePermission(c *gin.Context) error {
+	var secretKey = []byte(config.Env().Jwt.Secret)
+	authHeader := c.GetHeader("Authorization")
+	authorization := strings.Split(authHeader, " ")
+	claims := &helper.JwtPayload{}
+	jwt.ParseWithClaims(authorization[1], claims, func(token *jwt.Token) (any, error) {
+		return secretKey, nil
+	})
+	stackName := stack.Caller(1).Frame().Function
+	hasPermission := lo.Contains(claims.Permits, stackName)
+	if hasPermission {
+		return nil
+	} else {
+		return errors.New("no permission access")
 	}
 }

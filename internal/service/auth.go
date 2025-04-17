@@ -20,6 +20,9 @@ func NewAuthervice() AuthService {
 func (s *authService) Login(dto dto.AuthRequestDto) (*string, error) {
 	payload := helper.JwtPayload{}
 	copier.Copy(&payload, &dto)
+	payload.Permits = append(payload.Permits,
+		"super-cms/internal/handler.ArticleHandler.GetAll", "super-cms/internal/handler.ArticleHandler.GetByID",
+	)
 	token, err := helper.GenerateJwtToken(payload)
 	if err != nil {
 		return nil, err
