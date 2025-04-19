@@ -1,8 +1,8 @@
 package route
 
 import (
+	"super-cms/cmd/api/middleware"
 	"super-cms/internal/handler"
-	"super-cms/middleware"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"

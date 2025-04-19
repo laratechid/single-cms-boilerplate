@@ -37,12 +37,11 @@ func (s *articleService) GetAll(p dto.PaginationRequestDto) (*dto.PaginationResp
 	if err = copier.Copy(&articles, &data); err != nil {
 		return nil, err
 	}
-	totalPage := int(total) / p.Limit
 	response := dto.PaginationResponseDto[dto.ArticleDetailResponse]{
 		List:          articles,
 		Limit:         int64(p.Limit),
 		TotalEntry:    total,
-		TotalPage:     math.Ceil(float64(totalPage)),
+		TotalPage:     int64(math.Ceil(float64(total) / float64(p.Limit))),
 		IsHasNextPage: total > (int64(p.Limit) * int64(p.Page)),
 	}
 	return &response, nil
