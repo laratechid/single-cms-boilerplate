@@ -1,7 +1,7 @@
 package route
 
 import (
-	"super-cms/cmd/api/middleware"
+	mw "super-cms/cmd/api/middleware"
 	"super-cms/internal/handler"
 
 	"github.com/gin-gonic/gin"
@@ -9,18 +9,17 @@ import (
 )
 
 func SetupRoute(db *gorm.DB, gin *gin.Engine) {
-	auth := middleware.Authentication()
-
+	auth := mw.Authentication()
 	articleHandler := handler.NewArticleHandler(db)
-	authHandler := handler.NewAuthHandler()
+	authHandler := handler.NewAuthHandler(db)
 
 	// Article Route
 	articleRouter := gin.Group("/articles")
-	articleRouter.GET("/:id", auth, articleHandler.GetByID)
-	articleRouter.GET("", auth, articleHandler.GetAll)
-	articleRouter.POST("", auth, articleHandler.Create)
-	articleRouter.PATCH("/:id", auth, articleHandler.Update)
-	articleRouter.DELETE("/:id", auth, articleHandler.Delete)
+	articleRouter.GET("/:id", auth, mw.Permit("VIEW_ARTICLE_DETAIL"), articleHandler.GetByID)
+	articleRouter.GET("", auth, mw.Permit("VIEW_ARTICLE_LIST"), articleHandler.GetAll)
+	articleRouter.POST("", auth, mw.Permit("CREATE_ARTICLE"), articleHandler.Create)
+	articleRouter.PATCH("/:id", auth, mw.Permit("UPDATE_ARTICLE"), articleHandler.Update)
+	articleRouter.DELETE("/:id", auth, mw.Permit("DELETE_ARTICLE"), articleHandler.Delete)
 
 	// Auth Route
 	authRouter := gin.Group("/auth")

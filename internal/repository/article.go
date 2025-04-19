@@ -28,7 +28,7 @@ func NewArticleRepository(db *gorm.DB) ArticleRepository {
 }
 
 func (r articleRepository) stack() string {
-	return stack.Caller(0).Frame().Function
+	return stack.Caller(1).Frame().Function
 }
 
 func (r articleRepository) GetByID(id int64) (entity.Article, error) {

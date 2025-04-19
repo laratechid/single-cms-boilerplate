@@ -32,6 +32,27 @@ func Authentication() gin.HandlerFunc {
 	}
 }
 
+// Strategy: We attach permit name on route then compare permits on jwt payload
+func Permit(permitName string) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		authHeader := c.GetHeader("Authorization")
+		authorization := strings.Split(authHeader, " ")
+		claims := &helper.JwtPayload{}
+		if _, _, err := jwt.NewParser().ParseUnverified(authorization[1], claims); err != nil {
+			helper.ResInternalServerError(c, "internal server error")
+			return
+		}
+		hasPermission := lo.Contains(claims.Permits, permitName)
+		if !hasPermission {
+			helper.ResForbidden(c, "no permission access")
+			return
+		} else {
+			c.Next()
+		}
+	}
+}
+
+// Strategy: We validate permission on handler then compare permits on jwt payload
 func ValidatePermission(c *gin.Context) error {
 	authHeader := c.GetHeader("Authorization")
 	authorization := strings.Split(authHeader, " ")

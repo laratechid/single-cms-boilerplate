@@ -2,7 +2,6 @@ package handler
 
 import (
 	"strconv"
-	"super-cms/cmd/api/middleware"
 	"super-cms/helper"
 	"super-cms/internal/dto"
 	"super-cms/internal/service"
@@ -30,10 +29,6 @@ func NewArticleHandler(db *gorm.DB) ArticleHandler {
 //	@Success	200	{object}	helper.Response{data=dto.ArticleDetailResponse}
 //	@Router		/articles/{id} [get]
 func (h ArticleHandler) GetByID(c *gin.Context) {
-	if err := middleware.ValidatePermission(c); err != nil {
-		helper.ResErr(c, 400, err.Error())
-		return
-	}
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		helper.ResErr(c, 400, err.Error())
@@ -54,10 +49,6 @@ func (h ArticleHandler) GetByID(c *gin.Context) {
 //	@Success	200		{object}	helper.Response{data=dto.PaginationResponseDtoExample}
 //	@Router		/articles [get]
 func (h ArticleHandler) GetAll(c *gin.Context) {
-	if err := middleware.ValidatePermission(c); err != nil {
-		helper.ResErr(c, 400, err.Error())
-		return
-	}
 	var payload dto.PaginationRequestDto
 	if err := c.Bind(&payload); err != nil {
 		helper.ResErr(c, 400, err.Error())
@@ -82,10 +73,6 @@ func (h ArticleHandler) GetAll(c *gin.Context) {
 //	@Success	200		{object}	helper.Response{data=string}
 //	@Router		/articles [post]
 func (h ArticleHandler) Create(c *gin.Context) {
-	if err := middleware.ValidatePermission(c); err != nil {
-		helper.ResErr(c, 400, err.Error())
-		return
-	}
 	var payload dto.ArticleCreateRequestDto
 	if err := c.Bind(&payload); err != nil {
 		helper.ResErr(c, 400, err.Error())
@@ -110,10 +97,6 @@ func (h ArticleHandler) Create(c *gin.Context) {
 //	@Success	200		{object}	helper.Response{data=string}
 //	@Router		/articles/{id} [patch]
 func (h ArticleHandler) Update(c *gin.Context) {
-	if err := middleware.ValidatePermission(c); err != nil {
-		helper.ResErr(c, 400, err.Error())
-		return
-	}
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		helper.ResErr(c, 400, err.Error())
@@ -142,10 +125,6 @@ func (h ArticleHandler) Update(c *gin.Context) {
 //	@Success	200	{object}	helper.Response{data=string}
 //	@Router		/articles/{id} [delete]
 func (h ArticleHandler) Delete(c *gin.Context) {
-	if err := middleware.ValidatePermission(c); err != nil {
-		helper.ResErr(c, 400, err.Error())
-		return
-	}
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		helper.ResErr(c, 400, err.Error())
