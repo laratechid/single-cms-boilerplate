@@ -61,15 +61,11 @@ func (r articleRepository) Update(entity entity.Article) error {
 }
 
 func (r articleRepository) GetAll(p dto.PaginationRequestDto) ([]entity.Article, int64, error) {
+	var total int64
 	article := []entity.Article{}
 	p.SetDefault()
-	offset := (p.Page - 1) * p.Limit
-	query := r.db.Scopes(
-		func(d *gorm.DB) *gorm.DB {
-			return d.Offset(offset).Limit(p.Limit)
-		}).Find(&article)
-	var total int64
-	query.Count(&total)
+	query := r.db.Offset(p.Offset).Limit(p.Limit).Find(&article)
+	r.db.Model(&entity.Article{}).Count(&total)
 	err := query.Error
 	if err != nil {
 		helper.LogErr(err, r.stack())

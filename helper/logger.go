@@ -22,8 +22,7 @@ func LogErr(err error, stacks ...string) {
 			stack := stacks[0]
 			logrus.WithFields(logrus.Fields{
 				"stack": stack,
-				"err":   err.Error(),
-			}).Error()
+			}).Error(err.Error())
 			return
 		}
 	}

@@ -3,10 +3,10 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"super-cms/cmd/api/route"
 	"super-cms/config"
 	"super-cms/docs"
 	"super-cms/internal/entity"
-	"super-cms/internal/route"
 	"time"
 
 	"github.com/gin-gonic/gin"

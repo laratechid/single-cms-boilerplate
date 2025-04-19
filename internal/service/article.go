@@ -1,6 +1,7 @@
 package service
 
 import (
+	"math"
 	"super-cms/internal/dto"
 	"super-cms/internal/entity"
 	"super-cms/internal/repository"
@@ -36,10 +37,13 @@ func (s *articleService) GetAll(p dto.PaginationRequestDto) (*dto.PaginationResp
 	if err = copier.Copy(&articles, &data); err != nil {
 		return nil, err
 	}
+	totalPage := int(total) / p.Limit
 	response := dto.PaginationResponseDto[dto.ArticleDetailResponse]{
-		List:       articles,
-		Limit:      p.Limit,
-		TotalEntry: int(total),
+		List:          articles,
+		Limit:         int64(p.Limit),
+		TotalEntry:    total,
+		TotalPage:     math.Ceil(float64(totalPage)),
+		IsHasNextPage: total > (int64(p.Limit) * int64(p.Page)),
 	}
 	return &response, nil
 }

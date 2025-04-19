@@ -31,7 +31,8 @@ const docTemplate = `{
                         "type": "integer",
                         "example": 10,
                         "name": "limit",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     },
                     {
                         "type": "integer",
@@ -350,9 +351,12 @@ const docTemplate = `{
         "dto.PaginationResponseDtoExample": {
             "type": "object",
             "properties": {
+                "is_has_next_page": {
+                    "type": "boolean",
+                    "example": true
+                },
                 "limit": {
-                    "type": "integer",
-                    "example": 10
+                    "type": "integer"
                 },
                 "list": {
                     "type": "array",
@@ -361,6 +365,9 @@ const docTemplate = `{
                 "total_entry": {
                     "type": "integer",
                     "example": 100
+                },
+                "total_page": {
+                    "type": "number"
                 }
             }
         },
