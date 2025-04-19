@@ -25,7 +25,7 @@ func Authentication() gin.HandlerFunc {
 		}
 		jwtToken := authorization[1]
 		if err := helper.VerifyJwtToken(jwtToken); err != nil {
-			helper.ResForbidden(c, "invalid token")
+			helper.ResForbidden(c, err.Error())
 			return
 		}
 		c.Next()
@@ -39,6 +39,8 @@ func Permit(permitName string) gin.HandlerFunc {
 		authorization := strings.Split(authHeader, " ")
 		claims := &helper.JwtPayload{}
 		if _, _, err := jwt.NewParser().ParseUnverified(authorization[1], claims); err != nil {
+			stackName := stack.Caller(0).Frame().Function
+			helper.LogErr(err, stackName)
 			helper.ResInternalServerError(c, "internal server error")
 			return
 		}
@@ -60,7 +62,7 @@ func ValidatePermission(c *gin.Context) error {
 	if _, _, err := jwt.NewParser().ParseUnverified(authorization[1], claims); err != nil {
 		return err
 	}
-	stackName := stack.Caller(1).Frame().Function
+	stackName := stack.Caller(0).Frame().Function
 	hasPermission := lo.Contains(claims.Permits, stackName)
 	if hasPermission {
 		return nil

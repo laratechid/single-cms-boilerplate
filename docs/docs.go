@@ -334,17 +334,17 @@ const docTemplate = `{
         "dto.AuthRequestDto": {
             "type": "object",
             "required": [
-                "password",
-                "username"
+                "email",
+                "password"
             ],
             "properties": {
+                "email": {
+                    "type": "string",
+                    "minLength": 1
+                },
                 "password": {
                     "type": "string",
                     "minLength": 5
-                },
-                "username": {
-                    "type": "string",
-                    "minLength": 1
                 }
             }
         },
@@ -367,7 +367,7 @@ const docTemplate = `{
                     "example": 100
                 },
                 "total_page": {
-                    "type": "number"
+                    "type": "integer"
                 }
             }
         },

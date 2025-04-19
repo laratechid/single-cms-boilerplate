@@ -22,7 +22,7 @@ func init() {
 }
 
 // @title						SuperCMS documentation API
-// @version					3.0
+// @version						3.0
 // @securityDefinitions.apikey	BearerAuth
 // @in							header
 // @name						Authorization
@@ -31,10 +31,6 @@ func main() {
 	// Constructor Dependencies
 	r := gin.Default()
 	gorm := config.InitDB()
-	// err := gorm.AutoMigrate(&entity.Article{})
-	// if err != nil {
-	// 	panic("migrate error")
-	// }
 
 	docs.SwaggerInfo.BasePath = "/"
 	r.GET("", func(c *gin.Context) { c.JSON(http.StatusOK, "ok") })

@@ -3,22 +3,24 @@ package helper
 import (
 	"fmt"
 	"super-cms/config"
+	"time"
 
 	"github.com/golang-jwt/jwt/v5"
 )
 
 type JwtPayload struct {
-	ID            int64    `json:"id"`
-	Name          string   `json:"name"`
-	Username      string   `json:"username"`
-	Email         string   `json:"email"`
-	Permits       []string `json:"permits"`
-	jwt.MapClaims `json:"claims"`
+	ID       int64    `json:"id"`
+	Name     string   `json:"name"`
+	Username string   `json:"username"`
+	Email    string   `json:"email"`
+	Permits  []string `json:"permits"`
+	jwt.RegisteredClaims
 }
 
 var secretKey = []byte(config.Env().Jwt.Secret)
 
 func GenerateJwtToken(payload JwtPayload) (*string, error) {
+	payload.RegisteredClaims.ExpiresAt = jwt.NewNumericDate(time.Now().Add(2 * time.Minute))
 	claims := jwt.NewWithClaims(jwt.SigningMethodHS256, payload)
 	token, err := claims.SignedString(secretKey)
 	if err != nil {
@@ -36,6 +38,7 @@ func VerifyJwtToken(tokenString string) error {
 		return secretKey, nil
 	})
 	if err != nil {
+		LogErr(err)
 		return err
 	}
 
