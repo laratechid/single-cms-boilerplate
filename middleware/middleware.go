@@ -3,7 +3,6 @@ package middleware
 import (
 	"errors"
 	"strings"
-	"super-cms/config"
 	"super-cms/helper"
 
 	"github.com/gin-gonic/gin"
@@ -34,18 +33,20 @@ func Authentication() gin.HandlerFunc {
 }
 
 func ValidatePermission(c *gin.Context) error {
-	var secretKey = []byte(config.Env().Jwt.Secret)
 	authHeader := c.GetHeader("Authorization")
 	authorization := strings.Split(authHeader, " ")
 	claims := &helper.JwtPayload{}
-	jwt.ParseWithClaims(authorization[1], claims, func(token *jwt.Token) (any, error) {
-		return secretKey, nil
-	})
+	if _, _, err := jwt.NewParser().ParseUnverified(authorization[1], claims); err != nil {
+		return err
+	}
 	stackName := stack.Caller(1).Frame().Function
 	hasPermission := lo.Contains(claims.Permits, stackName)
 	if hasPermission {
 		return nil
 	} else {
-		return errors.New("no permission access")
+		msg := "no permission access"
+		err := errors.New(msg)
+		helper.LogErr(err, stackName)
+		return err
 	}
 }

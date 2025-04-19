@@ -22,7 +22,7 @@ func GenerateJwtToken(payload JwtPayload) (*string, error) {
 	claims := jwt.NewWithClaims(jwt.SigningMethodHS256, payload)
 	token, err := claims.SignedString(secretKey)
 	if err != nil {
-		LogErr(err)
+		// LogErr(err)
 		return nil, err
 	}
 	return &token, nil
