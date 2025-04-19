@@ -22,11 +22,11 @@ func init() {
 	})
 }
 
-// @title						SuperCMS documentation API
-// @version					3.0
-// @securityDefinitions.apikey	BearerAuth
-// @in							header
-// @name						Authorization
+//	@title						SuperCMS documentation API
+//	@version					3.0
+//	@securityDefinitions.apikey	BearerAuth
+//	@in							header
+//	@name						Authorization
 func main() {
 
 	// Constructor Dependencies
