@@ -13,3 +13,5 @@ swag-generate:
 swag-format:
 	swag fmt
 
+mock-create:
+	mockgen -source=$(source) -destination=$(basename $(source))_mock.go

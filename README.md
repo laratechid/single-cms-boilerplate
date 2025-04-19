@@ -19,12 +19,13 @@
    ```
 3. Run service watch mode:
    ```sh
+   ## watch mode
    make dev
-   ```
-4. Run service:
-   ```sh
+   
+   ## prod mode
    make start
    ```
+   
 ## Documentation
 
 1. Generate Swagger Docs:
@@ -36,6 +37,13 @@
    make swag-format
    ```
 
+## Generate Mock File
+
+1. Generate Mock Unit Test:
+   ```sh
+   make mock-create source=${your-file-path}
+   ```
+   
 ## Testing
 
 1. Run Unit Test:
