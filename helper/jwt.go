@@ -14,6 +14,8 @@ type JwtPayload struct {
 	Username string   `json:"username"`
 	Email    string   `json:"email"`
 	Permits  []string `json:"permits"`
+	Foto     string   `json:"foto"`
+	Role     string   `json:"role"`
 	jwt.RegisteredClaims
 }
 
