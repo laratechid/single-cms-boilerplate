@@ -6,6 +6,7 @@ import (
 	"super-cms/helper"
 	"time"
 
+	"github.com/go-stack/stack"
 	"github.com/redis/go-redis/v9"
 )
 
@@ -28,16 +29,35 @@ func NewCacheService(redisClient *redis.Client) CacheService {
 	}
 }
 
+func (r *cacheService) traceErr(err error) {
+	stack := stack.Caller(1).Frame().Function
+	helper.LogErr(err, stack)
+}
+
 func (s *cacheService) Set(key string, value any, exp time.Duration) error {
-	return s.client.Set(s.ctx, key, value, exp).Err()
+	if err := s.client.Set(s.ctx, key, value, exp).Err(); err != nil {
+		s.traceErr(err)
+		return err
+	}
+	return nil
+
 }
 
 func (s *cacheService) Get(key string) (any, error) {
-	return s.client.Get(s.ctx, key).Result()
+	data, err := s.client.Get(s.ctx, key).Result()
+	if err != nil {
+		s.traceErr(err)
+		return nil, err
+	}
+	return data, nil
 }
 
 func (s *cacheService) Exists(key string) (bool, error) {
 	exists, err := s.client.Exists(s.ctx, key).Result()
+	if err != nil {
+		s.traceErr(err)
+		return false, err
+	}
 	return exists > 0, err
 }
 
