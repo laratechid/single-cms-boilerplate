@@ -64,6 +64,25 @@ definitions:
       total_page:
         type: integer
     type: object
+  dto.UserInfoResponse:
+    properties:
+      email:
+        type: string
+      foto:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      permits:
+        items:
+          type: string
+        type: array
+      role:
+        type: string
+      username:
+        type: string
+    type: object
   helper.Response:
     properties:
       data: {}
@@ -202,6 +221,21 @@ paths:
       summary: Update Article
       tags:
       - Article
+  /auth/info:
+    get:
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/helper.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.UserInfoResponse'
+              type: object
+      summary: Auth Info
+      tags:
+      - Auth
   /auth/login:
     post:
       parameters:
@@ -224,9 +258,4 @@ paths:
       summary: Auth Login
       tags:
       - Auth
-securityDefinitions:
-  BearerAuth:
-    in: header
-    name: Authorization
-    type: apiKey
 swagger: "2.0"

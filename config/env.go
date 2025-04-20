@@ -20,8 +20,18 @@ type Config struct {
 		User string
 		Pass string
 	}
+
+	Redis struct {
+		Host string
+		Port string
+		User string
+		Pass string
+	}
 	Jwt struct {
 		Secret string
+	}
+	BaseUrl struct {
+		FrontendUrl string
 	}
 }
 
@@ -43,7 +53,14 @@ func Env() *Config {
 	cfg.Postgres.User = os.Getenv("POSTGRES_USER")
 	cfg.Postgres.Pass = os.Getenv("POSTGRES_PASS")
 
+	cfg.Redis.Host = os.Getenv("REDIS_HOST")
+	cfg.Redis.Port = os.Getenv("REDIS_PORT")
+	cfg.Redis.User = os.Getenv("REDIS_USER")
+	cfg.Redis.Pass = os.Getenv("REDIS_PASS")
+
 	cfg.Jwt.Secret = os.Getenv("JWT_SECRET")
+
+	cfg.BaseUrl.FrontendUrl = os.Getenv("FRONTEND_URL")
 
 	return cfg
 }

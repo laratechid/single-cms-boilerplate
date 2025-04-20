@@ -20,8 +20,9 @@ func NewUserRepository(db *gorm.DB) UserRepository {
 	return &userRepository{db}
 }
 
-func (r userRepository) stack() string {
-	return stack.Caller(1).Frame().Function
+func (r userRepository) traceErr(err error) {
+	stack := stack.Caller(1).Frame().Function
+	helper.LogErr(err, stack)
 }
 
 func (r userRepository) GetByEmail(email string) (entity.User, error) {
@@ -30,7 +31,7 @@ func (r userRepository) GetByEmail(email string) (entity.User, error) {
 		Select("id", "email", "password", "name", "username", "alias", "foto").
 		First(&user).Error
 	if err != nil {
-		helper.LogErr(err, r.stack())
+		r.traceErr(err)
 	}
 	return user, err
 }

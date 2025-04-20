@@ -21,21 +21,19 @@ func init() {
 	})
 }
 
-// @title						SuperCMS documentation API
-// @version						3.0
-// @securityDefinitions.apikey	BearerAuth
-// @in							header
-// @name						Authorization
+//	@title		SuperCMS documentation API
+//	@version	3.0
 func main() {
 
 	// Constructor Dependencies
 	r := gin.Default()
 	gorm := config.InitDB()
+	redis := config.InitRedis()
 
 	docs.SwaggerInfo.BasePath = "/"
 	r.GET("", func(c *gin.Context) { c.JSON(http.StatusOK, "ok") })
 	r.GET("/docs/supercms/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-	route.SetupRoute(gorm, r)
+	route.SetupRoute(gorm, r, redis)
 
 	r.Run(fmt.Sprintf(":%s", config.Env().App.Port))
 }
