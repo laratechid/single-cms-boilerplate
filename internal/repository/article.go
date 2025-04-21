@@ -27,15 +27,16 @@ func NewArticleRepository(db *gorm.DB) ArticleRepository {
 	}
 }
 
-func (r articleRepository) stack() string {
-	return stack.Caller(1).Frame().Function
+func (r articleRepository) traceErr(err error) {
+	stack := stack.Caller(1).Frame().Function
+	helper.LogErr(err, stack)
 }
 
 func (r articleRepository) GetByID(id int64) (entity.Article, error) {
 	article := entity.Article{ID: id}
 	err := r.db.First(&article).Error
 	if err != nil {
-		helper.LogErr(err, r.stack())
+		r.traceErr(err)
 	}
 	return article, err
 }
@@ -44,7 +45,7 @@ func (r articleRepository) Create(entity entity.Article) error {
 	create := r.db.Create(&entity)
 	err := create.Error
 	if err != nil {
-		helper.LogErr(err, r.stack())
+		r.traceErr(err)
 		return err
 	}
 	return nil
@@ -54,7 +55,7 @@ func (r articleRepository) Update(entity entity.Article) error {
 	update := r.db.Updates(&entity)
 	err := update.Error
 	if err != nil {
-		helper.LogErr(err, r.stack())
+		r.traceErr(err)
 		return err
 	}
 	return nil
@@ -68,7 +69,7 @@ func (r articleRepository) GetAll(p dto.PaginationRequestDto) ([]entity.Article,
 	r.db.Model(&entity.Article{}).Count(&total)
 	err := query.Error
 	if err != nil {
-		helper.LogErr(err, r.stack())
+		r.traceErr(err)
 		return nil, total, err
 	}
 	return article, total, nil
@@ -78,7 +79,7 @@ func (r articleRepository) Delete(id int64) error {
 	article := entity.Article{ID: id}
 	err := r.db.Delete(&article).Error
 	if err != nil {
-		helper.LogErr(err, r.stack())
+		r.traceErr(err)
 		return err
 	}
 	return nil

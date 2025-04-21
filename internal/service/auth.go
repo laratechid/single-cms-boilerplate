@@ -21,8 +21,9 @@ func NewAuthervice(userRepo repository.UserRepository) AuthService {
 	return &authService{userRepo}
 }
 
-func (r authService) stack() string {
-	return stack.Caller(1).Frame().Function
+func (r authService) traceErr(err error) {
+	stack := stack.Caller(1).Frame().Function
+	helper.LogErr(err, stack)
 }
 
 func (s *authService) Login(dto dto.AuthRequestDto) (*string, error) {
@@ -32,7 +33,7 @@ func (s *authService) Login(dto dto.AuthRequestDto) (*string, error) {
 		return nil, err
 	}
 	if err = helper.CompareHashPassword(user.Password, dto.Password); err != nil {
-		helper.LogErr(err, s.stack())
+		s.traceErr(err)
 		return nil, err
 	}
 	copier.Copy(&payload, &user)
