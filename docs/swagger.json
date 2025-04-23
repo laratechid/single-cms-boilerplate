@@ -8,11 +8,6 @@
     "paths": {
         "/client/articles": {
             "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
                 "tags": [
                     "Article"
                 ],
@@ -70,7 +65,7 @@
                 "tags": [
                     "Article"
                 ],
-                "summary": "Get Article Details",
+                "summary": "Get  Article Details",
                 "parameters": [
                     {
                         "type": "integer",

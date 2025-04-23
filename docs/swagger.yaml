@@ -685,8 +685,6 @@ paths:
                 data:
                   $ref: '#/definitions/dto.PaginationResponseDtoExample'
               type: object
-      security:
-      - BearerAuth: []
       summary: Get All Article
       tags:
       - Article
@@ -712,7 +710,7 @@ paths:
       - XApiKey: []
       - XTempoToken: []
       - XRequestTime: []
-      summary: Get Article Details
+      summary: Get  Article Details
       tags:
       - Article
   /newsroom/articles:

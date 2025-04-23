@@ -21,17 +21,17 @@ func init() {
 	})
 }
 
-//	@title						Go Pustaka API Documentation
-//	@version					3.0
-//	@securityDefinitions.apikey	XApiKey
-//	@in							header
-//	@name						X-Api-Key
-//	@securityDefinitions.apikey	XTempoToken
-//	@in							header
-//	@name						X-Tempo-Token
-//	@securityDefinitions.apikey	XRequestTime
-//	@in							header
-//	@name						X-Request-Time
+// @title						Go Pustaka API Documentation
+// @version					3.0
+// @securityDefinitions.apikey	XApiKey
+// @in							header
+// @name						X-Api-Key
+// @securityDefinitions.apikey	XTempoToken
+// @in							header
+// @name						X-Tempo-Token
+// @securityDefinitions.apikey	XRequestTime
+// @in							header
+// @name						X-Request-Time
 func main() {
 	r := gin.Default()
 	gorm := config.InitDB()

@@ -22,14 +22,14 @@ func NewArticleHandler(db *gorm.DB) ArticleHandler {
 	return controller
 }
 
-// @Tags		Article
-// @Security	XApiKey
-// @Security	XTempoToken
-// @Security	XRequestTime
-// @Summary	Get Article Details
-// @Param		id	path		int	true	"Article ID"
-// @Success	200	{object}	helper.Response{data=dto.ArticleDetailResponse}
-// @Router		/client/articles/{id} [get]
+//	@Tags		Article
+//	@Security	XApiKey
+//	@Security	XTempoToken
+//	@Security	XRequestTime
+//	@Summary	Get  Article Details
+//	@Param		id	path		int	true	"Article ID"
+//	@Success	200	{object}	helper.Response{data=dto.ArticleDetailResponse}
+//	@Router		/client/articles/{id} [get]
 func (h ArticleHandler) GetByID(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -44,12 +44,11 @@ func (h ArticleHandler) GetByID(c *gin.Context) {
 	helper.ResSuccess(c, data)
 }
 
-// @Tags		Article
-// @Security	BearerAuth
-// @Summary	Get All Article
-// @Param		request	query		dto.PaginationRequestDto	true	"Query Params"
-// @Success	200		{object}	helper.Response{data=dto.PaginationResponseDtoExample}
-// @Router		/client/articles [get]
+//	@Tags		Article
+//	@Summary	Get All Article
+//	@Param		request	query		dto.PaginationRequestDto	true	"Query Params"
+//	@Success	200		{object}	helper.Response{data=dto.PaginationResponseDtoExample}
+//	@Router		/client/articles [get]
 func (h ArticleHandler) GetAll(c *gin.Context) {
 	var payload dto.PaginationRequestDto
 	if err := c.Bind(&payload); err != nil {

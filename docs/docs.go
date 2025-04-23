@@ -17,11 +17,6 @@ const docTemplate = `{
     "paths": {
         "/client/articles": {
             "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
                 "tags": [
                     "Article"
                 ],
@@ -79,7 +74,7 @@ const docTemplate = `{
                 "tags": [
                     "Article"
                 ],
-                "summary": "Get Article Details",
+                "summary": "Get  Article Details",
                 "parameters": [
                     {
                         "type": "integer",
