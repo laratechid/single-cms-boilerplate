@@ -23,7 +23,7 @@ func SetupRoute(db *gorm.DB, r *gin.Engine, redis *redis.Client) {
 
 	// Article Route
 	articleRouter := r.Group("/articles")
-	articleRouter.GET("/:id", permits("VIEW_ARTICLE_DETAIL"), articleHandler.GetByID)
+	articleRouter.GET("/:id", articleHandler.GetByID)
 	articleRouter.GET("", permits("VIEW_ARTICLE_LIST"), articleHandler.GetAll)
 	articleRouter.POST("", permits("CREATE_ARTICLE"), articleHandler.Create)
 	articleRouter.PATCH("/:id", permits("UPDATE_ARTICLE"), articleHandler.Update)

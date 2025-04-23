@@ -305,6 +305,205 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "dto.Article": {
+            "type": "object",
+            "properties": {
+                "access": {
+                    "type": "string"
+                },
+                "alphabet_count": {
+                    "type": "integer"
+                },
+                "approved_at": {
+                    "type": "string"
+                },
+                "approved_by": {
+                    "type": "string"
+                },
+                "article_id_old": {
+                    "type": "integer"
+                },
+                "article_user": {
+                    "description": "Attachments               []*entity.Attachment   ` + "`" + `json:\"attachments\"` + "`" + `",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.ArticleUser"
+                    }
+                },
+                "article_uuid": {
+                    "type": "string"
+                },
+                "breaking_news_at": {
+                    "type": "string"
+                },
+                "canonical_url": {
+                    "type": "string"
+                },
+                "canonical_url_old": {
+                    "type": "string"
+                },
+                "content": {
+                    "type": "string"
+                },
+                "content_category": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "created_by": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "domain_id": {
+                    "type": "integer"
+                },
+                "domain_id_old": {
+                    "type": "integer"
+                },
+                "embed_code": {
+                    "type": "string"
+                },
+                "fact_check_claim": {
+                    "type": "string"
+                },
+                "fact_check_result": {
+                    "type": "string"
+                },
+                "fact_check_result_image": {
+                    "type": "string"
+                },
+                "feature_image": {
+                    "type": "string"
+                },
+                "feature_image_caption": {
+                    "type": "string"
+                },
+                "foot_note": {
+                    "type": "string"
+                },
+                "format_article_id": {
+                    "type": "integer"
+                },
+                "headline_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "infografis_file": {
+                    "type": "string"
+                },
+                "is_active": {
+                    "type": "boolean"
+                },
+                "is_anonymous_reporter_editor": {
+                    "type": "boolean"
+                },
+                "is_article_jembatan": {
+                    "type": "string"
+                },
+                "is_audio_available": {
+                    "type": "boolean"
+                },
+                "is_byline": {
+                    "type": "boolean"
+                },
+                "is_label_tag": {
+                    "description": "will be deleted soon",
+                    "type": "string"
+                },
+                "kicker": {
+                    "type": "string"
+                },
+                "language": {
+                    "type": "string"
+                },
+                "paragraphs": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "published_at": {
+                    "type": "string"
+                },
+                "published_by": {
+                    "type": "string"
+                },
+                "snackbar": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "sub_rubric_id": {
+                    "type": "integer"
+                },
+                "summary": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "tag_article": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.ArticleTagsOld"
+                    }
+                },
+                "tag_article_new": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "tag_title": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "taicing": {
+                    "type": "string"
+                },
+                "title_digital": {
+                    "type": "string"
+                },
+                "title_print": {
+                    "type": "string"
+                },
+                "title_seo": {
+                    "type": "string"
+                },
+                "tts_audio_url": {
+                    "type": "string"
+                },
+                "unpublished_at": {
+                    "type": "string"
+                },
+                "unpublished_by": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "updated_by": {
+                    "type": "string"
+                },
+                "upperdeck": {
+                    "type": "string"
+                },
+                "word_count": {
+                    "type": "integer"
+                },
+                "writing_style": {
+                    "type": "string"
+                }
+            }
+        },
         "dto.ArticleCreateRequestDto": {
             "type": "object",
             "required": [
@@ -325,19 +524,209 @@ const docTemplate = `{
         "dto.ArticleDetailResponse": {
             "type": "object",
             "properties": {
-                "body": {
+                "access": {
+                    "type": "string"
+                },
+                "alphabet_count": {
+                    "type": "integer"
+                },
+                "approved_at": {
+                    "type": "string"
+                },
+                "approved_by": {
+                    "type": "string"
+                },
+                "article_id_old": {
+                    "type": "integer"
+                },
+                "article_user": {
+                    "description": "Attachments               []*Attachment     ` + "`" + `json:\"attachments\"` + "`" + `",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.ArticleUser"
+                    }
+                },
+                "article_uuid": {
+                    "type": "string"
+                },
+                "breaking_news_at": {
+                    "type": "string"
+                },
+                "canonical_url": {
+                    "type": "string"
+                },
+                "canonical_url_old": {
+                    "type": "string"
+                },
+                "content": {
+                    "type": "string"
+                },
+                "content_category": {
                     "type": "string"
                 },
                 "created_at": {
                     "type": "string"
                 },
+                "created_by": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "domain_id": {
+                    "type": "integer"
+                },
+                "domain_id_old": {
+                    "type": "integer"
+                },
+                "embed_code": {
+                    "type": "string"
+                },
+                "fact_check_claim": {
+                    "type": "string"
+                },
+                "fact_check_result": {
+                    "type": "string"
+                },
+                "fact_check_result_image": {
+                    "type": "string"
+                },
+                "feature_image": {
+                    "type": "string"
+                },
+                "feature_image_caption": {
+                    "type": "string"
+                },
+                "foot_note": {
+                    "type": "string"
+                },
+                "format_article_id": {
+                    "type": "integer"
+                },
+                "headline_at": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "integer"
                 },
-                "title": {
+                "infografis_file": {
+                    "type": "string"
+                },
+                "is_active": {
+                    "type": "boolean"
+                },
+                "is_anonymous_reporter_editor": {
+                    "type": "boolean"
+                },
+                "is_article_jembatan": {
+                    "type": "string"
+                },
+                "is_audio_available": {
+                    "type": "boolean"
+                },
+                "is_byline": {
+                    "type": "boolean"
+                },
+                "is_label_tag": {
+                    "description": "will be deleted soon",
+                    "type": "string"
+                },
+                "kicker": {
+                    "type": "string"
+                },
+                "language": {
+                    "type": "string"
+                },
+                "paragraphs": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "published_at": {
+                    "type": "string"
+                },
+                "published_by": {
+                    "type": "string"
+                },
+                "snackbar": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "sub_rubric_id": {
+                    "type": "integer"
+                },
+                "summary": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "tag_article": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.ArticleTagsOld"
+                    }
+                },
+                "tag_article_new": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "tag_title": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "taicing": {
+                    "type": "string"
+                },
+                "title_digital": {
+                    "type": "string"
+                },
+                "title_print": {
+                    "type": "string"
+                },
+                "title_seo": {
+                    "type": "string"
+                },
+                "tts_audio_url": {
+                    "type": "string"
+                },
+                "unpublished_at": {
+                    "type": "string"
+                },
+                "unpublished_by": {
                     "type": "string"
                 },
                 "updated_at": {
+                    "type": "string"
+                },
+                "updated_by": {
+                    "type": "string"
+                },
+                "upperdeck": {
+                    "type": "string"
+                },
+                "word_count": {
+                    "type": "integer"
+                },
+                "writing_style": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.ArticleTagsOld": {
+            "type": "object",
+            "properties": {
+                "alias": {
+                    "type": "string"
+                },
+                "caption": {
                     "type": "string"
                 }
             }
@@ -356,6 +745,47 @@ const docTemplate = `{
                 "title": {
                     "type": "string",
                     "minLength": 5
+                }
+            }
+        },
+        "dto.ArticleUser": {
+            "type": "object",
+            "properties": {
+                "article": {
+                    "$ref": "#/definitions/dto.Article"
+                },
+                "article_id": {
+                    "type": "integer"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "created_by": {
+                    "type": "string"
+                },
+                "deleted_at": {
+                    "type": "string"
+                },
+                "deleted_by": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "updated_by": {
+                    "type": "string"
+                },
+                "user": {
+                    "$ref": "#/definitions/dto.User"
+                },
+                "user_id": {
+                    "type": "integer"
                 }
             }
         },
@@ -396,6 +826,98 @@ const docTemplate = `{
                 },
                 "total_page": {
                     "type": "integer"
+                }
+            }
+        },
+        "dto.User": {
+            "type": "object",
+            "properties": {
+                "actived_at": {
+                    "type": "string"
+                },
+                "actived_by": {
+                    "type": "string"
+                },
+                "alias": {
+                    "type": "string"
+                },
+                "biodata": {
+                    "type": "string"
+                },
+                "biodata_en": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "created_by": {
+                    "type": "string"
+                },
+                "deleted_at": {
+                    "type": "string"
+                },
+                "deleted_by": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "facebook": {
+                    "type": "string"
+                },
+                "force_reset_password": {
+                    "type": "boolean"
+                },
+                "foto": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "is_admin": {
+                    "type": "boolean"
+                },
+                "is_contributor": {
+                    "type": "boolean"
+                },
+                "is_editor": {
+                    "type": "boolean"
+                },
+                "linked": {
+                    "type": "string"
+                },
+                "main_email": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "nik": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "secondary_email": {
+                    "type": "string"
+                },
+                "twitter": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "updated_by": {
+                    "type": "string"
+                },
+                "user_remp_id": {
+                    "type": "integer"
+                },
+                "username": {
+                    "type": "string"
+                },
+                "uuid": {
+                    "type": "string"
                 }
             }
         },

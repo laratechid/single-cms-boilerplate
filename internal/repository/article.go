@@ -1,9 +1,9 @@
 package repository
 
 import (
+	"super-cms/entity"
 	"super-cms/helper"
 	"super-cms/internal/dto"
-	"super-cms/internal/entity"
 
 	"github.com/go-stack/stack"
 	"gorm.io/gorm"
@@ -31,12 +31,74 @@ func (r articleRepository) traceErr(err error) {
 }
 
 func (r articleRepository) GetByID(id int64) (entity.Article, error) {
-	article := entity.Article{ID: id}
-	err := r.db.First(&article).Error
+	query := r.db.Where(entity.Article{ID: id})
+	article := entity.Article{}
+	err := query.Preload("Attachments", func(query *gorm.DB) *gorm.DB {
+		query.Select("article_attachments.id", "article_attachments.article_id", "article_attachments.attachment_id")
+		return query
+	}).
+		Preload("SubRubric", func(query *gorm.DB) *gorm.DB {
+			query = query.Select([]string{
+				"sub_rubrics.id",
+				"sub_rubrics.name",
+				"sub_rubrics.alias",
+				"sub_rubrics.rubric_id",
+			}).
+				Preload("Rubric", func(query *gorm.DB) *gorm.DB {
+					query = query.Select("rubrics.id", "rubrics.name", "rubrics.alias")
+					return query
+				})
+			return query
+		}).
+		Preload("ArticleGroups", func(query *gorm.DB) *gorm.DB {
+			query = query.Select("article_groups.id", "article_groups.id", "article_groups.group_id", "article_groups.article_id").
+				Preload("Group", func(query *gorm.DB) *gorm.DB {
+					query = query.Select([]string{
+						"groups.id",
+						"groups.uuid",
+						"groups.cover",
+						"groups.caption",
+						"groups.alias",
+						"groups.description",
+						"groups.category",
+						"groups.sequence",
+						"groups.published_at",
+						"groups.created_at",
+						"groups.status",
+						"groups.date",
+					})
+					return query
+				})
+			return query
+		}).
+		Preload("ArticleUser", func(query *gorm.DB) *gorm.DB {
+			query = query.Select("article_user.id", "article_user.article_id", "article_user.user_id", "article_user.type").
+				Preload("User", func(query *gorm.DB) *gorm.DB {
+					query = query.Select([]string{
+						"users.id",
+						"users.uuid",
+						"users.name",
+						"users.alias",
+						"users.foto",
+						"users.username",
+						"users.email",
+						"users.nik",
+						"users.biodata",
+					})
+					return query
+				})
+			return query
+		}).
+		Where("domain_id = ?", 1).
+		// Scopes(domain.PublishedCondition(c)). // check platform "cms"
+		First(&article).Error
+
 	if err != nil {
 		r.traceErr(err)
+		return article, err
 	}
-	return article, err
+
+	return article, nil
 }
 
 func (r articleRepository) Create(entity entity.Article) error {

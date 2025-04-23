@@ -1,14 +1,17 @@
 package service
 
 import (
+	"bytes"
 	"math"
+	"strings"
+	"super-cms/entity"
 	"super-cms/helper"
 	"super-cms/internal/dto"
-	"super-cms/internal/entity"
 	"super-cms/internal/repository"
 
 	"github.com/go-stack/stack"
 	"github.com/jinzhu/copier"
+	"golang.org/x/net/html"
 	"gorm.io/gorm"
 )
 
@@ -30,7 +33,7 @@ func NewArticleService(db *gorm.DB) ArticleService {
 	}
 }
 
-func (r *articleService) traceErr(err error) {
+func (s *articleService) traceErr(err error) {
 	stack := stack.Caller(1).Frame().Function
 	helper.LogErr(err, stack)
 }
@@ -62,11 +65,20 @@ func (s *articleService) GetByID(id int64) (*dto.ArticleDetailResponse, error) {
 		s.traceErr(err)
 		return nil, err
 	}
+	var paragraphs []string
+	paragraphs, err = contentToArray(article.Content)
+	if err != nil {
+		return nil, err
+	}
+	if strings.ToUpper(article.Access) != "VIP" {
+		paragraphs = addAdsense(paragraphs)
+	}
 	response := dto.ArticleDetailResponse{}
 	if err = copier.Copy(&response, &article); err != nil {
 		s.traceErr(err)
 		return nil, err
 	}
+	response.Paragraphs = paragraphs
 	return &response, nil
 }
 
@@ -103,4 +115,77 @@ func (s *articleService) Delete(id int64) error {
 		return err
 	}
 	return nil
+}
+
+func contentToArray(htmlContent string) (paragraphContents []string, err error) {
+	// Parse the HTML data
+	doc, err := html.Parse(strings.NewReader(htmlContent))
+	if err != nil {
+		return nil, err
+	}
+	// Find and store the required tags
+	var f func(*html.Node)
+	f = func(n *html.Node) {
+		if n.Type == html.ElementNode && (n.Data == "p" || n.Data == "div" || n.Data == "h3") {
+			var buf bytes.Buffer
+			html.Render(&buf, n)
+			paragraphContents = append(paragraphContents, buf.String())
+		}
+		for c := n.FirstChild; c != nil; c = c.NextSibling {
+			f(c)
+		}
+	}
+	f(doc)
+	return
+}
+
+func addAdsense(arr []string) []string {
+	// Track the count of <p> tags encountered
+	pTagCount := 0
+
+	// Count tag p in array
+	countTagp := countTagP(arr)
+
+	// Result array to store modified HTML
+	var resultArray []string
+
+	if countTagp != 0 {
+		for index, html := range arr {
+			// position AdsSlot in 0 (zero)
+			if index == 0 {
+				for _, valAdslot := range []struct {
+					Position int
+					Html     string
+				}{{Position: 1, Html: "<div>Ad 1</div>"}, {Position: 2, Html: "<div>Ad 2</div>"}} {
+					if valAdslot.Position == 0 {
+						resultArray = append(resultArray, valAdslot.Html)
+						break
+					}
+				}
+			}
+			resultArray = append(resultArray, html)
+			if strings.HasPrefix(html, "<p") {
+				pTagCount++
+				// Check if the current <p> tag is the 1st, 3rd, or 5th, based on config.yaml
+				for _, valAdslot := range []struct {
+					Position int
+					Html     string
+				}{{Position: 1, Html: "<div>Ad 1</div>"}, {Position: 2, Html: "<div>Ad 2</div>"}} {
+					if pTagCount == valAdslot.Position {
+						resultArray = append(resultArray, valAdslot.Html)
+						continue
+					}
+				}
+			}
+		}
+	}
+
+	return resultArray
+}
+
+func countTagP(arr []string) (countTagP int) {
+	for _, htmlString := range arr {
+		countTagP += strings.Count(htmlString, "<p")
+	}
+	return
 }

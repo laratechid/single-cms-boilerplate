@@ -6,11 +6,7 @@ import (
 	"github.com/google/uuid"
 )
 
-type ArticleTagsOld struct {
-	Caption string `json:"caption"`
-	Alias   string `json:"alias"`
-}
-type ArticleDetailResponse struct {
+type Article struct {
 	ID                        int64             `json:"id"`
 	ArticleUUID               uuid.UUID         `json:"article_uuid"`
 	ArticleIDOld              int64             `json:"article_id_old"`
@@ -72,4 +68,36 @@ type ArticleDetailResponse struct {
 	ArticleUser               []*ArticleUser    `json:"article_user"`
 	SubRubric                 *SubRubric        `json:"sub_rubric"`
 	ArticleGroups             []*ArticleGroup   `json:"article_groups"`
+}
+
+type ArticleGroup struct {
+	ID                   int32      `json:"id"`
+	SequenceArticleGroup int        `json:"sequence_article_group"`
+	HeadlineAt           *time.Time `json:"headline_at"`
+	HeadlineBy           string     `json:"headline_by"`
+	BreakingNewsAt       *time.Time `json:"breaking_news_at"`
+	BreakingNewsBy       string     `json:"breaking_news_by"`
+	GroupID              int32      `json:"group_id"`
+	ArticleID            int64      `json:"article_id"`
+	CreatedAt            *time.Time `json:"created_at"`
+	CreatedBy            string     `json:"created_by"`
+	UpdatedAt            *time.Time `json:"updated_at"`
+	UpdatedBy            string     `json:"updated_by"`
+	Group                Group      `json:"group"`
+	Article              *Article   `json:"article,omitempty"`
+}
+
+type ArticleUser struct {
+	ID        int32      `json:"id"`
+	ArticleID int32      `json:"article_id"`
+	UserID    int32      `json:"user_id"`
+	Type      string     `json:"type"`
+	CreatedAt *time.Time `json:"created_at"`
+	CreatedBy string     `json:"created_by"`
+	UpdatedAt *time.Time `json:"updated_at"`
+	UpdatedBy string     `json:"updated_by"`
+	DeletedAt *time.Time `json:"deleted_at"`
+	DeletedBy string     `json:"deleted_by"`
+	User      *User      `json:"user"`
+	Article   *Article   `json:"article"`
 }

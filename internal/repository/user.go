@@ -1,8 +1,8 @@
 package repository
 
 import (
+	"super-cms/entity"
 	"super-cms/helper"
-	"super-cms/internal/entity"
 
 	"github.com/go-stack/stack"
 	"gorm.io/gorm"
