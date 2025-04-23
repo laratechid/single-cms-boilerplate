@@ -20,7 +20,7 @@ func AuthWithPermits(redis *redis.Client, permitName string) gin.HandlerFunc {
 			helper.ResForbidden(c, err.Error())
 			return
 		}
-		claims, _ := helper.ParseToken(accessToken)
+		claims, _ := helper.ParseJwtToken(accessToken)
 		key := fmt.Sprintf("%s%s", helper.RedisGetUserPrefix(claims.ID), accessToken)
 		token, err := redis.Get(c, key).Result()
 		if err != nil {
@@ -31,7 +31,7 @@ func AuthWithPermits(redis *redis.Client, permitName string) gin.HandlerFunc {
 			helper.ResForbidden(c, err.Error())
 			return
 		}
-		payload, _ := helper.ParseToken(token)
+		payload, _ := helper.ParseJwtToken(token)
 		hasPermission := lo.Contains(payload.Permits, permitName)
 		if !hasPermission {
 			helper.ResForbidden(c, "no permission access")

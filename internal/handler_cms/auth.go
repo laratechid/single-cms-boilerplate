@@ -1,4 +1,4 @@
-package handler
+package handler_cms
 
 import (
 	"go-pustaka-api/config"
@@ -25,11 +25,11 @@ func NewAuthHandler(db *gorm.DB, redis *redis.Client) AuthHandler {
 	return controller
 }
 
-// @Tags		Auth
-// @Summary	Auth Login
-// @Param		request	body		dto.AuthRequestDto	true	"Auth payload"
-// @Success	200		{object}	helper.Response{data=string}
-// @Router		/auth/login [post]
+//	@Tags		CMS - Auth
+//	@Summary	Auth Login
+//	@Param		request	body		dto.AuthRequestDto	true	"Auth payload"
+//	@Success	200		{object}	helper.Response{data=string}
+//	@Router		/newsroom/auth/login [post]
 func (h AuthHandler) Login(c *gin.Context) {
 	var payload dto.AuthRequestDto
 	if err := c.Bind(&payload); err != nil {
@@ -50,10 +50,10 @@ func (h AuthHandler) Login(c *gin.Context) {
 	helper.ResSuccess(c, token)
 }
 
-// @Tags		Auth
-// @Summary	Auth Info
-// @Success	200	{object}	helper.Response{data=dto.UserInfoResponse}
-// @Router		/auth/info [get]
+//	@Tags		CMS - Auth
+//	@Summary	Auth Info
+//	@Success	200	{object}	helper.Response{data=dto.UserInfoResponse}
+//	@Router		/newsroom/auth/info [get]
 func (h AuthHandler) UserInfo(c *gin.Context) {
 	token, err := c.Cookie("access_token")
 	if err != nil {

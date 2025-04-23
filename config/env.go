@@ -9,9 +9,11 @@ import (
 
 type Config struct {
 	App struct {
-		Port string
-		Env  string
-		Name string
+		Port       string
+		Env        string
+		Name       string
+		ApiKey     string
+		TempoToken string
 	}
 	Postgres struct {
 		Host string
@@ -33,6 +35,9 @@ type Config struct {
 	BaseUrl struct {
 		FrontendUrl string
 	}
+	Csrf struct {
+		TokenDuration string
+	}
 }
 
 func Env() *Config {
@@ -46,6 +51,8 @@ func Env() *Config {
 	cfg.App.Port = os.Getenv("APP_PORT")
 	cfg.App.Env = os.Getenv("APP_ENV")
 	cfg.App.Name = os.Getenv("APP_NAME")
+	cfg.App.ApiKey = os.Getenv("APP_API_KEY")
+	cfg.App.TempoToken = os.Getenv("APP_TEMPO_TOKEN")
 
 	cfg.Postgres.Host = os.Getenv("POSTGRES_HOST")
 	cfg.Postgres.Port = os.Getenv("POSTGRES_PORT")
@@ -61,6 +68,8 @@ func Env() *Config {
 	cfg.Jwt.Secret = os.Getenv("JWT_SECRET")
 
 	cfg.BaseUrl.FrontendUrl = os.Getenv("FRONTEND_URL")
+
+	cfg.Csrf.TokenDuration = os.Getenv("CSRF_TOKEN_DURATION")
 
 	return cfg
 }

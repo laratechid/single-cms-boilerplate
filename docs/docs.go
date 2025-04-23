@@ -15,7 +15,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/articles": {
+        "/client/articles": {
             "get": {
                 "security": [
                     {
@@ -61,6 +61,102 @@ const docTemplate = `{
                         }
                     }
                 }
+            }
+        },
+        "/client/articles/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "XApiKey": []
+                    },
+                    {
+                        "XTempoToken": []
+                    },
+                    {
+                        "XRequestTime": []
+                    }
+                ],
+                "tags": [
+                    "Article"
+                ],
+                "summary": "Get Article Details",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Article ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/helper.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/dto.ArticleDetailResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/newsroom/articles": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "tags": [
+                    "CMS - Article"
+                ],
+                "summary": "Get All Article",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "example": 10,
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "example": 1,
+                        "name": "page",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/helper.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/dto.PaginationResponseDtoExample"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
             },
             "post": {
                 "security": [
@@ -69,7 +165,7 @@ const docTemplate = `{
                     }
                 ],
                 "tags": [
-                    "Article"
+                    "CMS - Article"
                 ],
                 "summary": "Create Article",
                 "parameters": [
@@ -105,7 +201,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/articles/{id}": {
+        "/newsroom/articles/{id}": {
             "get": {
                 "security": [
                     {
@@ -113,7 +209,7 @@ const docTemplate = `{
                     }
                 ],
                 "tags": [
-                    "Article"
+                    "CMS - Article"
                 ],
                 "summary": "Get Article Details",
                 "parameters": [
@@ -153,7 +249,7 @@ const docTemplate = `{
                     }
                 ],
                 "tags": [
-                    "Article"
+                    "CMS - Article"
                 ],
                 "summary": "Delete Article",
                 "parameters": [
@@ -193,7 +289,7 @@ const docTemplate = `{
                     }
                 ],
                 "tags": [
-                    "Article"
+                    "CMS - Article"
                 ],
                 "summary": "Update Article",
                 "parameters": [
@@ -236,10 +332,10 @@ const docTemplate = `{
                 }
             }
         },
-        "/auth/info": {
+        "/newsroom/auth/info": {
             "get": {
                 "tags": [
-                    "Auth"
+                    "CMS - Auth"
                 ],
                 "summary": "Auth Info",
                 "responses": {
@@ -264,10 +360,10 @@ const docTemplate = `{
                 }
             }
         },
-        "/auth/login": {
+        "/newsroom/auth/login": {
             "post": {
                 "tags": [
-                    "Auth"
+                    "CMS - Auth"
                 ],
                 "summary": "Auth Login",
                 "parameters": [
@@ -320,11 +416,16 @@ const docTemplate = `{
                 "approved_by": {
                     "type": "string"
                 },
+                "article_groups": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.ArticleGroup"
+                    }
+                },
                 "article_id_old": {
                     "type": "integer"
                 },
                 "article_user": {
-                    "description": "Attachments               []*entity.Attachment   ` + "`" + `json:\"attachments\"` + "`" + `",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/dto.ArticleUser"
@@ -332,6 +433,12 @@ const docTemplate = `{
                 },
                 "article_uuid": {
                     "type": "string"
+                },
+                "attachments": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.Attachment"
+                    }
                 },
                 "breaking_news_at": {
                     "type": "string"
@@ -438,6 +545,9 @@ const docTemplate = `{
                 },
                 "status": {
                     "type": "string"
+                },
+                "sub_rubric": {
+                    "$ref": "#/definitions/dto.SubRubric"
                 },
                 "sub_rubric_id": {
                     "type": "integer"
@@ -536,11 +646,16 @@ const docTemplate = `{
                 "approved_by": {
                     "type": "string"
                 },
+                "article_groups": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.ArticleGroup"
+                    }
+                },
                 "article_id_old": {
                     "type": "integer"
                 },
                 "article_user": {
-                    "description": "Attachments               []*Attachment     ` + "`" + `json:\"attachments\"` + "`" + `",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/dto.ArticleUser"
@@ -548,6 +663,12 @@ const docTemplate = `{
                 },
                 "article_uuid": {
                     "type": "string"
+                },
+                "attachments": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.Attachment"
+                    }
                 },
                 "breaking_news_at": {
                     "type": "string"
@@ -655,6 +776,9 @@ const docTemplate = `{
                 "status": {
                     "type": "string"
                 },
+                "sub_rubric": {
+                    "$ref": "#/definitions/dto.SubRubric"
+                },
                 "sub_rubric_id": {
                     "type": "integer"
                 },
@@ -716,6 +840,53 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "writing_style": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.ArticleGroup": {
+            "type": "object",
+            "properties": {
+                "article": {
+                    "$ref": "#/definitions/dto.Article"
+                },
+                "article_id": {
+                    "type": "integer"
+                },
+                "breaking_news_at": {
+                    "type": "string"
+                },
+                "breaking_news_by": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "created_by": {
+                    "type": "string"
+                },
+                "group": {
+                    "$ref": "#/definitions/dto.Group"
+                },
+                "group_id": {
+                    "type": "integer"
+                },
+                "headline_at": {
+                    "type": "string"
+                },
+                "headline_by": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "sequence_article_group": {
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "updated_by": {
                     "type": "string"
                 }
             }
@@ -789,6 +960,71 @@ const docTemplate = `{
                 }
             }
         },
+        "dto.Attachment": {
+            "type": "object",
+            "properties": {
+                "articles": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.Article"
+                    }
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "created_by": {
+                    "type": "string"
+                },
+                "deleted_at": {
+                    "type": "string"
+                },
+                "deleted_by": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "editor": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "is_video": {
+                    "type": "boolean"
+                },
+                "link": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "published_at": {
+                    "type": "string"
+                },
+                "published_by": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "updated_by": {
+                    "type": "string"
+                },
+                "uuid": {
+                    "type": "string"
+                },
+                "video_source": {
+                    "type": "string"
+                },
+                "video_target": {
+                    "type": "string"
+                }
+            }
+        },
         "dto.AuthRequestDto": {
             "type": "object",
             "required": [
@@ -803,6 +1039,104 @@ const docTemplate = `{
                 "password": {
                     "type": "string",
                     "minLength": 5
+                }
+            }
+        },
+        "dto.Group": {
+            "type": "object",
+            "properties": {
+                "alias": {
+                    "type": "string"
+                },
+                "article_groups": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.ArticleGroup"
+                    }
+                },
+                "articles": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.Article"
+                    }
+                },
+                "caption": {
+                    "type": "string"
+                },
+                "category": {
+                    "type": "string"
+                },
+                "cover": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "created_by": {
+                    "type": "string"
+                },
+                "date": {
+                    "type": "string"
+                },
+                "deleted_at": {
+                    "type": "string"
+                },
+                "deleted_by": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "groups_child": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.Group"
+                    }
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "is_active": {
+                    "type": "boolean"
+                },
+                "level": {
+                    "type": "integer"
+                },
+                "meta_keyword": {
+                    "type": "string"
+                },
+                "meta_title": {
+                    "type": "string"
+                },
+                "parent_id": {
+                    "type": "integer"
+                },
+                "published_at": {
+                    "type": "string"
+                },
+                "published_by": {
+                    "type": "string"
+                },
+                "sequence": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "unpublished_at": {
+                    "type": "string"
+                },
+                "unpublished_by": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "updated_by": {
+                    "type": "string"
+                },
+                "uuid": {
+                    "type": "string"
                 }
             }
         },
@@ -826,6 +1160,97 @@ const docTemplate = `{
                 },
                 "total_page": {
                     "type": "integer"
+                }
+            }
+        },
+        "dto.Rubric": {
+            "type": "object",
+            "properties": {
+                "alias": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "created_by": {
+                    "type": "string"
+                },
+                "deleted_at": {
+                    "type": "string"
+                },
+                "deleted_by": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "is_active": {
+                    "type": "boolean"
+                },
+                "is_main": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "sub_rubric": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.SubRubric"
+                    }
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "updated_by": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.SubRubric": {
+            "type": "object",
+            "properties": {
+                "alias": {
+                    "type": "string"
+                },
+                "articles": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.Article"
+                    }
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "created_by": {
+                    "type": "string"
+                },
+                "deleted_at": {
+                    "type": "string"
+                },
+                "deleted_by": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "is_active": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "rubric": {
+                    "$ref": "#/definitions/dto.Rubric"
+                },
+                "rubric_id": {
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "updated_by": {
+                    "type": "string"
                 }
             }
         },
@@ -964,6 +1389,23 @@ const docTemplate = `{
                 }
             }
         }
+    },
+    "securityDefinitions": {
+        "XApiKey": {
+            "type": "apiKey",
+            "name": "X-Api-Key",
+            "in": "header"
+        },
+        "XRequestTime": {
+            "type": "apiKey",
+            "name": "X-Request-Time",
+            "in": "header"
+        },
+        "XTempoToken": {
+            "type": "apiKey",
+            "name": "X-Tempo-Token",
+            "in": "header"
+        }
     }
 }`
 
@@ -973,7 +1415,7 @@ var SwaggerInfo = &swag.Spec{
 	Host:             "",
 	BasePath:         "",
 	Schemes:          []string{},
-	Title:            "SuperCMS documentation API",
+	Title:            "Go Pustaka API Documentation",
 	Description:      "",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,

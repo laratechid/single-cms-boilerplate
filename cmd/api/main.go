@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"go-pustaka-api/cmd/api/route"
 	"go-pustaka-api/config"
+	"go-pustaka-api/constant"
 	"go-pustaka-api/docs"
-	"net/http"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -21,19 +21,25 @@ func init() {
 	})
 }
 
-// @title		SuperCMS documentation API
-// @version	3.0
+//	@title						Go Pustaka API Documentation
+//	@version					3.0
+//	@securityDefinitions.apikey	XApiKey
+//	@in							header
+//	@name						X-Api-Key
+//	@securityDefinitions.apikey	XTempoToken
+//	@in							header
+//	@name						X-Tempo-Token
+//	@securityDefinitions.apikey	XRequestTime
+//	@in							header
+//	@name						X-Request-Time
 func main() {
-
-	// Constructor Dependencies
 	r := gin.Default()
 	gorm := config.InitDB()
 	redis := config.InitRedis()
 
 	docs.SwaggerInfo.BasePath = "/"
-	r.GET("", func(c *gin.Context) { c.JSON(http.StatusOK, "ok") })
-	r.GET("/docs/supercms/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-	route.SetupRoute(gorm, r, redis)
-
+	r.GET(constant.SwaggerPath, ginSwagger.WrapHandler(swaggerFiles.Handler))
+	route.NewsroomRoute(gorm, r, redis)
+	route.ClientRoute(gorm, r, redis)
 	r.Run(fmt.Sprintf(":%s", config.Env().App.Port))
 }

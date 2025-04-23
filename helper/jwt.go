@@ -50,7 +50,7 @@ func VerifyJwtToken(tokenString string) error {
 	return err
 }
 
-func ParseToken(token string) (*JwtPayload, error) {
+func ParseJwtToken(token string) (*JwtPayload, error) {
 	var payload JwtPayload
 	if _, _, err := jwt.NewParser().ParseUnverified(token, &payload); err != nil {
 		return nil, err

@@ -70,9 +70,6 @@ func (s *articleService) GetByID(id int64) (*dto.ArticleDetailResponse, error) {
 	if err != nil {
 		return nil, err
 	}
-	if strings.ToUpper(article.Access) != "VIP" {
-		paragraphs = addAdsense(paragraphs)
-	}
 	response := dto.ArticleDetailResponse{}
 	if err = copier.Copy(&response, &article); err != nil {
 		s.traceErr(err)
@@ -136,56 +133,5 @@ func contentToArray(htmlContent string) (paragraphContents []string, err error) 
 		}
 	}
 	f(doc)
-	return
-}
-
-func addAdsense(arr []string) []string {
-	// Track the count of <p> tags encountered
-	pTagCount := 0
-
-	// Count tag p in array
-	countTagp := countTagP(arr)
-
-	// Result array to store modified HTML
-	var resultArray []string
-
-	if countTagp != 0 {
-		for index, html := range arr {
-			// position AdsSlot in 0 (zero)
-			if index == 0 {
-				for _, valAdslot := range []struct {
-					Position int
-					Html     string
-				}{{Position: 1, Html: "<div>Ad 1</div>"}, {Position: 2, Html: "<div>Ad 2</div>"}} {
-					if valAdslot.Position == 0 {
-						resultArray = append(resultArray, valAdslot.Html)
-						break
-					}
-				}
-			}
-			resultArray = append(resultArray, html)
-			if strings.HasPrefix(html, "<p") {
-				pTagCount++
-				// Check if the current <p> tag is the 1st, 3rd, or 5th, based on config.yaml
-				for _, valAdslot := range []struct {
-					Position int
-					Html     string
-				}{{Position: 1, Html: "<div>Ad 1</div>"}, {Position: 2, Html: "<div>Ad 2</div>"}} {
-					if pTagCount == valAdslot.Position {
-						resultArray = append(resultArray, valAdslot.Html)
-						continue
-					}
-				}
-			}
-		}
-	}
-
-	return resultArray
-}
-
-func countTagP(arr []string) (countTagP int) {
-	for _, htmlString := range arr {
-		countTagP += strings.Count(htmlString, "<p")
-	}
 	return
 }

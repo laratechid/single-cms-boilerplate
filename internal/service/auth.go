@@ -77,7 +77,7 @@ func (s *authService) Login(ctx context.Context, dto dto.AuthRequestDto) (*strin
 }
 
 func (s *authService) UserInfo(token string) (*dto.UserInfoResponse, error) {
-	payload, err := helper.ParseToken(token)
+	payload, err := helper.ParseJwtToken(token)
 	if err != nil {
 		s.traceErr(err)
 		return nil, err
@@ -89,7 +89,7 @@ func (s *authService) UserInfo(token string) (*dto.UserInfoResponse, error) {
 		s.traceErr(err)
 		return nil, err
 	}
-	payload, err = helper.ParseToken(data.(string))
+	payload, err = helper.ParseJwtToken(data.(string))
 	if err != nil {
 		s.traceErr(err)
 		return nil, err
