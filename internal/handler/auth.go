@@ -1,11 +1,11 @@
 package handler
 
 import (
-	"super-cms/config"
-	"super-cms/helper"
-	"super-cms/internal/dto"
-	"super-cms/internal/repository"
-	"super-cms/internal/service"
+	"go-pustaka-api/config"
+	"go-pustaka-api/helper"
+	"go-pustaka-api/internal/dto"
+	"go-pustaka-api/internal/repository"
+	"go-pustaka-api/internal/service"
 
 	"github.com/gin-gonic/gin"
 	"github.com/redis/go-redis/v9"
@@ -25,11 +25,11 @@ func NewAuthHandler(db *gorm.DB, redis *redis.Client) AuthHandler {
 	return controller
 }
 
-//	@Tags		Auth
-//	@Summary	Auth Login
-//	@Param		request	body		dto.AuthRequestDto	true	"Auth payload"
-//	@Success	200		{object}	helper.Response{data=string}
-//	@Router		/auth/login [post]
+// @Tags		Auth
+// @Summary	Auth Login
+// @Param		request	body		dto.AuthRequestDto	true	"Auth payload"
+// @Success	200		{object}	helper.Response{data=string}
+// @Router		/auth/login [post]
 func (h AuthHandler) Login(c *gin.Context) {
 	var payload dto.AuthRequestDto
 	if err := c.Bind(&payload); err != nil {
@@ -50,10 +50,10 @@ func (h AuthHandler) Login(c *gin.Context) {
 	helper.ResSuccess(c, token)
 }
 
-//	@Tags		Auth
-//	@Summary	Auth Info
-//	@Success	200	{object}	helper.Response{data=dto.UserInfoResponse}
-//	@Router		/auth/info [get]
+// @Tags		Auth
+// @Summary	Auth Info
+// @Success	200	{object}	helper.Response{data=dto.UserInfoResponse}
+// @Router		/auth/info [get]
 func (h AuthHandler) UserInfo(c *gin.Context) {
 	token, err := c.Cookie("access_token")
 	if err != nil {

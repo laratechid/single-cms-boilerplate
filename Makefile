@@ -2,9 +2,15 @@
 yellowText=\033[0;33m
 resetText=\033[0m
 
+# === FUNCTIONS ===
+define print-example
+	@echo "$(yellowText)example command:$(resetText) make $(1)"
+	@echo ""
+endef
+
 # === COMMANDS ===
 
-dev:
+develop:
 	air
 
 start:
@@ -20,16 +26,13 @@ swag-format:
 	swag fmt
 
 mock-create:
-	@echo "$(yellowText)example command:$(resetText) make mock-create source=internal/repository/user.go"
-	@echo ""
+	$(call print-example,mock-create source=internal/repository/user.go)
 	mockgen -source=$(source) -destination=$(basename $(source))_mock.go
 
 migration-create:
-	@echo "$(yellowText)example command:$(resetText) make migration-create name=add_role_permission"
-	@echo ""
+	$(call print-example,migration-create name=add_role_permission)
 	migrate create -ext sql -dir ./migrations $(name)
 
 migration-up:
-	@echo "$(yellowText)example command:$(resetText) make migration-up dbUrl=postgres://postgres:root@localhost:5432/single_brand"
-	@echo ""
+	$(call print-example,migration-up dbUrl=postgres://postgres:root@localhost:5432/single_brand)
 	migrate -path ./migrations -database "$(dbUrl)" up

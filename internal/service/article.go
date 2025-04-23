@@ -2,12 +2,12 @@ package service
 
 import (
 	"bytes"
+	"go-pustaka-api/entity"
+	"go-pustaka-api/helper"
+	"go-pustaka-api/internal/dto"
+	"go-pustaka-api/internal/repository"
 	"math"
 	"strings"
-	"super-cms/entity"
-	"super-cms/helper"
-	"super-cms/internal/dto"
-	"super-cms/internal/repository"
 
 	"github.com/go-stack/stack"
 	"github.com/jinzhu/copier"

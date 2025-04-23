@@ -1,10 +1,10 @@
 package handler
 
 import (
+	"go-pustaka-api/helper"
+	"go-pustaka-api/internal/dto"
+	"go-pustaka-api/internal/service"
 	"strconv"
-	"super-cms/helper"
-	"super-cms/internal/dto"
-	"super-cms/internal/service"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -22,12 +22,12 @@ func NewArticleHandler(db *gorm.DB) ArticleHandler {
 	return controller
 }
 
-//	@Tags		Article
-//	@Security	BearerAuth
-//	@Summary	Get Article Details
-//	@Param		id	path		int	true	"Article ID"
-//	@Success	200	{object}	helper.Response{data=dto.ArticleDetailResponse}
-//	@Router		/articles/{id} [get]
+// @Tags		Article
+// @Security	BearerAuth
+// @Summary	Get Article Details
+// @Param		id	path		int	true	"Article ID"
+// @Success	200	{object}	helper.Response{data=dto.ArticleDetailResponse}
+// @Router		/articles/{id} [get]
 func (h ArticleHandler) GetByID(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -42,12 +42,12 @@ func (h ArticleHandler) GetByID(c *gin.Context) {
 	helper.ResSuccess(c, data)
 }
 
-//	@Tags		Article
-//	@Security	BearerAuth
-//	@Summary	Get All Article
-//	@Param		request	query		dto.PaginationRequestDto	true	"Query Params"
-//	@Success	200		{object}	helper.Response{data=dto.PaginationResponseDtoExample}
-//	@Router		/articles [get]
+// @Tags		Article
+// @Security	BearerAuth
+// @Summary	Get All Article
+// @Param		request	query		dto.PaginationRequestDto	true	"Query Params"
+// @Success	200		{object}	helper.Response{data=dto.PaginationResponseDtoExample}
+// @Router		/articles [get]
 func (h ArticleHandler) GetAll(c *gin.Context) {
 	var payload dto.PaginationRequestDto
 	if err := c.Bind(&payload); err != nil {
@@ -66,12 +66,12 @@ func (h ArticleHandler) GetAll(c *gin.Context) {
 	helper.ResSuccess(c, data)
 }
 
-//	@Tags		Article
-//	@Security	BearerAuth
-//	@Summary	Create Article
-//	@Param		request	body		dto.ArticleCreateRequestDto	true	"Article payload"
-//	@Success	200		{object}	helper.Response{data=string}
-//	@Router		/articles [post]
+// @Tags		Article
+// @Security	BearerAuth
+// @Summary	Create Article
+// @Param		request	body		dto.ArticleCreateRequestDto	true	"Article payload"
+// @Success	200		{object}	helper.Response{data=string}
+// @Router		/articles [post]
 func (h ArticleHandler) Create(c *gin.Context) {
 	var payload dto.ArticleCreateRequestDto
 	if err := c.Bind(&payload); err != nil {
@@ -89,13 +89,13 @@ func (h ArticleHandler) Create(c *gin.Context) {
 	helper.ResSuccess(c, "ok")
 }
 
-//	@Tags		Article
-//	@Security	BearerAuth
-//	@Summary	Update Article
-//	@Param		id		path		int							true	"Article ID"
-//	@Param		request	body		dto.ArticleUpdateRequestDto	true	"Article payload"
-//	@Success	200		{object}	helper.Response{data=string}
-//	@Router		/articles/{id} [patch]
+// @Tags		Article
+// @Security	BearerAuth
+// @Summary	Update Article
+// @Param		id		path		int							true	"Article ID"
+// @Param		request	body		dto.ArticleUpdateRequestDto	true	"Article payload"
+// @Success	200		{object}	helper.Response{data=string}
+// @Router		/articles/{id} [patch]
 func (h ArticleHandler) Update(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -118,12 +118,12 @@ func (h ArticleHandler) Update(c *gin.Context) {
 	helper.ResSuccess(c, "ok")
 }
 
-//	@Tags		Article
-//	@Security	BearerAuth
-//	@Summary	Delete Article
-//	@Param		id	path		int	true	"Article ID"
-//	@Success	200	{object}	helper.Response{data=string}
-//	@Router		/articles/{id} [delete]
+// @Tags		Article
+// @Security	BearerAuth
+// @Summary	Delete Article
+// @Param		id	path		int	true	"Article ID"
+// @Success	200	{object}	helper.Response{data=string}
+// @Router		/articles/{id} [delete]
 func (h ArticleHandler) Delete(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {

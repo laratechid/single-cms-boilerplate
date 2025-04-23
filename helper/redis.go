@@ -2,7 +2,7 @@ package helper
 
 import (
 	"fmt"
-	"super-cms/constant"
+	"go-pustaka-api/constant"
 )
 
 func RedisGetUserPrefix(userID int64) string {

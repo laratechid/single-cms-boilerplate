@@ -1,9 +1,9 @@
 package repository
 
 import (
-	"super-cms/entity"
-	"super-cms/helper"
-	"super-cms/internal/dto"
+	"go-pustaka-api/entity"
+	"go-pustaka-api/helper"
+	"go-pustaka-api/internal/dto"
 
 	"github.com/go-stack/stack"
 	"gorm.io/gorm"

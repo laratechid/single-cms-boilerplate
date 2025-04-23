@@ -3,10 +3,10 @@ package service
 import (
 	"context"
 	"fmt"
-	"super-cms/constant"
-	"super-cms/helper"
-	"super-cms/internal/dto"
-	"super-cms/internal/repository"
+	"go-pustaka-api/constant"
+	"go-pustaka-api/helper"
+	"go-pustaka-api/internal/dto"
+	"go-pustaka-api/internal/repository"
 
 	"github.com/go-stack/stack"
 	"github.com/jinzhu/copier"

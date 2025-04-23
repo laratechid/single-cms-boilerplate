@@ -1,4 +1,4 @@
-module super-cms
+module go-pustaka-api
 
 go 1.24.2
 

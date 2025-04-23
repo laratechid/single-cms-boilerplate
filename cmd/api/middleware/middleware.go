@@ -2,7 +2,7 @@ package middleware
 
 import (
 	"fmt"
-	"super-cms/helper"
+	"go-pustaka-api/helper"
 
 	"github.com/gin-gonic/gin"
 	"github.com/redis/go-redis/v9"

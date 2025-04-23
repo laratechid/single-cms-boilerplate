@@ -2,7 +2,7 @@ package helper
 
 import (
 	"fmt"
-	"super-cms/config"
+	"go-pustaka-api/config"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"

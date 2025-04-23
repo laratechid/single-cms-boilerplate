@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
+	"go-pustaka-api/cmd/api/route"
+	"go-pustaka-api/config"
+	"go-pustaka-api/docs"
 	"net/http"
-	"super-cms/cmd/api/route"
-	"super-cms/config"
-	"super-cms/docs"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -21,8 +21,8 @@ func init() {
 	})
 }
 
-//	@title		SuperCMS documentation API
-//	@version	3.0
+// @title		SuperCMS documentation API
+// @version	3.0
 func main() {
 
 	// Constructor Dependencies

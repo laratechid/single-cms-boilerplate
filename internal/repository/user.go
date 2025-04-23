@@ -1,8 +1,8 @@
 package repository
 
 import (
-	"super-cms/entity"
-	"super-cms/helper"
+	"go-pustaka-api/entity"
+	"go-pustaka-api/helper"
 
 	"github.com/go-stack/stack"
 	"gorm.io/gorm"

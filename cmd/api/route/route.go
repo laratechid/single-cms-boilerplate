@@ -1,8 +1,8 @@
 package route
 
 import (
-	mw "super-cms/cmd/api/middleware"
-	"super-cms/internal/handler"
+	mw "go-pustaka-api/cmd/api/middleware"
+	"go-pustaka-api/internal/handler"
 
 	"github.com/gin-gonic/gin"
 	"github.com/redis/go-redis/v9"
